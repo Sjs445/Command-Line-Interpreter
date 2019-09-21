@@ -12,6 +12,7 @@ using namespace std;
 void runShell();
 void parseInput(char input[MAX]);
 bool strCompare(char*);
+void createChildThread(char * arg[]);
 
 int main()
 {
@@ -41,21 +42,36 @@ void runShell()
 void parseInput(char input[MAX])
 {
     char * args;
+    char * argArray[4];
+    int i=0;
+
     args=strtok(input, " \n");
     
     if(strCompare(args))
     {
-        cout<<"Creating child thread.\n";
+        cout<<"Creating child thread.\n";  
+        while(args!=NULL)
+        {
+            argArray[i++]=args;
+            args=strtok(NULL, " ");
+        }
         
+        thread th1(createChildThread, argArray);
+        th1.join();
     }
+   
+}
 
-    /* 
-    while(args!=NULL)
+void createChildThread(char * arg[])
+{
+    char cmd[100]="";
+
+    for(int i=0; i<4; i++)
     {
-        cout<<args<<endl;
-        args=strtok(NULL, " ");
+        strcat(cmd, arg[i]);
+        strcat(cmd, " ");
     }
-    */
+    system(cmd);
 }
 
 bool strCompare(char * args)
@@ -64,7 +80,7 @@ bool strCompare(char * args)
     {
         return true;
     }
-    else if(strcmp(args, "dir")==0)
+    else if(strcmp(args, "ls")==0)
     {
         return true;
     }
@@ -76,7 +92,7 @@ bool strCompare(char * args)
     {
         return true;
     }
-    else if(strcmp(args, "path")==0)
+    else if(strcmp(args, "pwd")==0)
     {
         return true;
     }
