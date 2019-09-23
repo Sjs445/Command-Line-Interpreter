@@ -20,23 +20,24 @@ int main()
     cout<<"Enter a command to begin.\n";
     cout<<"--------------------------------------------\n";
     runShell();
-
-
-   // while(1)
-   // {
-        
- 
-   // }
-
-   cout<<"Thanks for using myShell!"<<endl;        
+    cout<<"Thanks for using myShell!"<<endl;
+    cout<<"--------------------------------------------\n";
     return 0;
 }
 
 void runShell()
 {
     char input[MAX];
-    fgets(input, MAX, stdin);
-    parseInput(input);
+    while(1)
+    {
+        cout<<"->";
+        if(strcmp(input, "exit")==0)
+        {
+            break;
+        }
+        fgets(input, MAX, stdin);
+        parseInput(input);
+    }
 }
 
 void parseInput(char input[MAX])
@@ -48,25 +49,22 @@ void parseInput(char input[MAX])
     args=strtok(input, " \n");
     
     if(strCompare(args))
-    {
-        cout<<"Creating child thread.\n";  
+    { 
         while(args!=NULL)
         {
             argArray[i++]=args;
             args=strtok(NULL, " ");
         }
-        
         thread th1(createChildThread, argArray);
         th1.join();
     }
-   
 }
 
 void createChildThread(char * arg[])
 {
     char cmd[100]="";
 
-    for(int i=0; i<4; i++)
+    for(int i=0; i<4 && arg[i]!=NULL; i++)
     {
         strcat(cmd, arg[i]);
         strcat(cmd, " ");
@@ -80,7 +78,7 @@ bool strCompare(char * args)
     {
         return true;
     }
-    else if(strcmp(args, "ls")==0)
+    else if(strcmp(args, "ls")==0)  //dir
     {
         return true;
     }
@@ -88,19 +86,19 @@ bool strCompare(char * args)
     {
         return true;
     }
-    else if(strcmp(args, "vol")==0)
+    else if(strcmp(args, "vol")==0) //Couldn't find bash command for this
     {
         return true;
     }
-    else if(strcmp(args, "pwd")==0)
+    else if(strcmp(args, "pwd")==0) //Path
     {
         return true;
     }
-    else if(strcmp(args, "tasklist")==0)
+    else if(strcmp(args, "ps")==0)  //Tasklist
     {
         return true;
     }
-    else if(strcmp(args, "notepad")==0)
+    else if(strcmp(args, "notepad")==0) //Couldn't find bash command for this
     {
         return true;
     }
@@ -108,7 +106,7 @@ bool strCompare(char * args)
     {
         return true;
     }
-    else if(strcmp(args, "color")==0)
+    else if(strcmp(args, "color")==0) //Couldn't find bash command for this
     {
         return true;
     }
